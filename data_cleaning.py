@@ -15,7 +15,27 @@ df['employer provided']=df['Salary Estimate'].apply(lambda x: 1 if 'employer pro
 df= df[df['Salary Estimate']!='-1']
 #remove unwanted text from salary
 salary=df['Salary Estimate'].apply(lambda x: x.split('(')[0])
-minus_kd=salary.apply(lambda x: x.replace('K','')).replace('$','')
+minus_kd=salary.apply(lambda x: x.replace('K','').replace('$',''))
+df['min_salary']= minus_kd.apply(lambda x: int(x.split('-')[0]))
+df['max_salary']=minus_kd.apply(lambda x: int(x.split('-')[1]))
+df['avg_salary']= (df.min_salary+df.max_salary)/2
+
+#company name text only
+#already cleaned
+
+#job location
+
+df['job_state']= df['Location'].apply(lambda x: x.split(',')[1])
+df.job_state.value_counts()
+#df['same_state']=df.apply(lambda x: 1 if x.Location==x. )
+df.columns
+df['age']= df.Founded.apply(lambda x: x if x<1 else 2021-x )
+
+#job description
+#python
+df['python_yn']=df['Job Description'].apply(lambda x: 1 if 'python' in x.lower() else 0)
+
+df.to_csv('salary_data_cleaned.csv', index=False)
 
 
 
